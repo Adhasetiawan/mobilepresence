@@ -17,7 +17,7 @@ exports.registrasi = function(req, res){
         address : req.body.address,
         division : req.body.division,
         role : req.body.role,
-        image : req.body.image
+        picture : req.file.filename
     }
 
     var query = "SELECT email FROM ?? WHERE ?? = ?";
@@ -29,7 +29,7 @@ exports.registrasi = function(req, res){
         if (error){
             console.log(error);
         }else{
-            if(rows.length == 0 && req.file.filename){
+            if(rows.length == 0){
                 var query = "INSERT INTO ?? SET ?";
                 var table = ["user_tbl"];
 
