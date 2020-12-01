@@ -12,6 +12,7 @@ exports.registrasi = function(req, res){
         id_user : req.body.id_user,
         username : req.body.username,
         email : req.body.email,
+        imei : req.body.imei,
         password: md5(req.body.password),
         name : req.body.password,
         address : req.body.address,
