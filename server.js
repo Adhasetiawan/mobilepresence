@@ -12,6 +12,7 @@ var routes = require('./routes');
 routes(app);
 
 app.use('/auth', require('./middleware'));
+app.use('/uploads', express.static('uploads'));
 
 app.listen(4500, () =>{
     console.log('server started on port');
