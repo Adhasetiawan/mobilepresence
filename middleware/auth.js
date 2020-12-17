@@ -48,3 +48,53 @@ exports.registrasi = function(req, res){
         }
     });
 };
+
+//login
+exports.login = function(req, res){
+    var post = {
+        email : req.body.email,
+        password : req.body.password,
+        imei : req.body.imei
+    }
+
+    var query = "SELECT * FROM ?? WHERE ?? = ? AND ?? = ? AND ?? = ?";
+    var table = ["user_tbl", "email", post.email, "password", md5(post.password), "imei", post.imei];
+
+    query = mysql.format(query,table);
+
+    connection.query(query, function(error, rows){
+        if(error){
+            console.log(error);
+        }else{
+            if (rows.length == 1){
+                var token = jwt.sign({rows}, config.secret, {expiresIn: 36000});
+                id_user = rows[0].id_user;
+                username = rows[0].username;
+                name = rows[0].name;
+                address = rows[0].address;
+                division = rows[0].division;
+                role = rows[0].role;
+                picture = rows[0].picture;
+
+                const user = {
+                    id_user : id_user,
+                    username : username,
+                    name : name,
+                    address: address,
+                    division : division,
+                    role : role,
+                    picture : picture
+                }
+
+                res.json({
+                    success : true,
+                    massage : "Token has been generated",
+                    token : token,
+                    data_user : user
+                });
+            }else{
+                 res.json({"Error" : true, "Massage" : "Email atau password anda salah"});
+            }
+        }
+    });
+}
