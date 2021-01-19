@@ -70,6 +70,7 @@ exports.login = function(req, res){
                 var token = jwt.sign({rows}, config.secret, {expiresIn: 36000});
                 id_user = rows[0].id_user;
                 username = rows[0].username;
+                email = rows[0].email;
                 name = rows[0].name;
                 address = rows[0].address;
                 division = rows[0].division;
@@ -79,6 +80,7 @@ exports.login = function(req, res){
                 const user = {
                     id_user : id_user,
                     username : username,
+                    email : email,
                     name : name,
                     address: address,
                     division : division,
