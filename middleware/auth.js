@@ -64,7 +64,7 @@ exports.login = function(req, res){
 
     connection.query(query, function(error, rows){
         if(error){
-            console.log(error);
+            console.log(error)
         }else{
             if (rows.length == 1){
                 var token = jwt.sign({rows}, config.secret, {expiresIn: 36000});
@@ -95,7 +95,7 @@ exports.login = function(req, res){
                     data_user : user
                 });
             }else{
-                 res.json({"Error" : true, "Massage" : "Email atau password anda salah"});
+                 res.status(404).json({"Error" : true, "Massage" : "Email atau password anda salah"});
             }
         }
     });
