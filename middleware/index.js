@@ -10,6 +10,9 @@ router.post('/api/v1/register', imageupload.upload.single('image'), auth.registr
 //login
 router.post('/api/v1/login', auth.login);
 
+//passchange
+router.put('/api/v1/updatepass', verification(), auth.passchange);
+
 //testing verifikasi
 router.get('/api/v1/rahasia', verification(), auth.halamanrahasia);
 

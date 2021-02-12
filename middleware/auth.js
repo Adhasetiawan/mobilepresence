@@ -101,6 +101,46 @@ exports.login = function(req, res){
     });
 }
 
+//passchange
+exports.passchange = function (req, res){
+//pass one for new pass, pass two form confirm the new pass
+
+    var post = {
+        id_user : req.body.id_user,
+        pass_one : req.body.pass_one,
+        pass_two : req.body.pass_two
+    };
+
+    if(post.pass_one != post.pass_two){
+        res.status(406).json({"Error" : true, "Message" : "Please make sure to confirm your new password correctly!"});
+    }else {
+        var query = "SELECT id_user FROM ?? WHERE id_user = ?";
+        var table = ["user_tbl", post.id_user];
+
+        query = mysql.format(query,table);
+
+        connection.query(query, function(error, rows){
+            if(rows == 0){
+                res.status(404).json({"Error" : true, "Message" : "ID is not exist!"});
+            }else{
+                var query = "UPDATE ?? SET ?? = ? WHERE ?? = ?"
+                var table = ["user_tbl", "password", md5(post.pass_one), "id_user", post.id_user]
+
+                query = mysql.format(query,table);
+
+                connection.query(query, function(error,rows){
+                    if(error){
+                        console.log(error)
+                    }else{
+                        response.ok("Password has been change", res);
+                    }
+                });
+            }
+        });
+
+    }
+}
+
 exports.halamanrahasia = function(req, res){
     response.ok("halaman ini hanya untuk yang punya token", res);
 }
