@@ -21,8 +21,8 @@ exports.registrasi = function(req, res){
         picture : req.file.filename
     }
 
-    var query = "SELECT email FROM ?? WHERE ?? = ?";
-    var table = ["user_tbl", "email", post.email];
+    var query = "SELECT email, username FROM ?? WHERE ?? = ? AND ?? = ?";
+    var table = ["user_tbl", "email", post.email, "username", post.username];
 
     query = mysql.format(query,table);
 
@@ -43,7 +43,7 @@ exports.registrasi = function(req, res){
                     }
                 });
             }else{
-                response.ok("Email already exist", res);
+                response.ok("Email or Username already exist", res);
             }
         }
     });
