@@ -23,7 +23,7 @@ exports.trackrec = function (req, res){
         if(rows.length != 0){
          res.json({success : true, data_track : rows});
         }else{
-            console.log(error)
+            res.status(400).json({"Error" : true, "Massage" : "Something went wrong!"});
         }
     })
 }
