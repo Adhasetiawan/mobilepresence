@@ -11,11 +11,13 @@ exports.index = function (req, res){
 
 exports.trackrec = function (req, res){
     var search = {
-        id_user : req.body.id_user
+        id_user : req.body.id_user,
+        date_one : req.body.date_one,
+        date_two : req.body.date_two
     };
 
-    var query = "SELECT * FROM trackrec WHERE ?? = ?"
-    var input = ["id_user", search.id_user];
+    var query = "SELECT * FROM trackrec WHERE ?? = ? AND ?? BETWEEN ? AND ?"
+    var input = ["id_user", search.id_user, "date", search.date_one, search.date_two];
 
     query = mysql.format(query,input);
     
