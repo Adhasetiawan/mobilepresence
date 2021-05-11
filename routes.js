@@ -9,4 +9,7 @@ module.exports = function(app){
 
     app.route('/trackrecord')
     .get(verifikasi(), myjson.trackrec);
+
+    app.route('/detailrec')
+    .get(verifikasi(), myjson.detailrec);
 }
