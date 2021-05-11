@@ -15,7 +15,7 @@ function verification () {
                 if(err){
                     return rest.status(401).send({auth:false, message:"Token tidak terdaftar!"});
                 }else{
-                    if(decoded.rows[0].role == "Staff" || decoded.rows[0].role == "Staff" ){
+                    if(decoded.rows[0].role == "Staff" || decoded.rows[0].role == "Magang" ){
                         req.auth = decoded;
                         next();
                     }else{
