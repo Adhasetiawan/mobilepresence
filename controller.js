@@ -5,11 +5,12 @@ var connection = require('./connection');
 const conn = require('./connection');
 var mysql = require('mysql');
 
+//indexing
 exports.index = function (req, res){
     response.ok("Welcome", res);
 }
 
-//get post all track
+//get all track
 exports.trackrec = function (req, res){
     var search = {
         id_user : req.body.id_user,
