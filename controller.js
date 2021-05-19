@@ -4,6 +4,7 @@ var response = require('./res');
 var connection = require('./connection');
 const conn = require('./connection');
 var mysql = require('mysql');
+const { query, format } = require('./connection');
 
 //indexing
 exports.index = function (req, res){
@@ -48,6 +49,55 @@ exports.detailrec = function(req,res){
              res.json({Success : "true", detail : rows[0]});
         }else{
             res.status(400).json({"Error" : true, "Massage" : "Something went wrong!"});
+        }
+    })
+}
+
+//post presence
+exports.postpresence = function(req, res){
+    var presence={
+        post : req.body.post,
+        date : req.body.date,
+        arrivetime : req.body.arrivetime,
+        leavingtime : req.body.leavingtime,
+        latitude : req.body.latitude,
+        longitude : req.body.longitude,
+        id_user : req.body.id_user
+    };
+
+    var query = "INSERT INTO ?? SET ?";
+    var table = ["trackrec"];
+
+    query = mysql.format(query, table);
+
+    connection.query(query, presence, function(error, rows){
+        if(error){
+            console.log(error);
+            res.status(400).json({Error : "Yes", "Message" : "something is wrong"});
+        }else{
+            response.ok("Your presence has been saved",res);
+        }
+    })
+}
+
+//post absence
+exports.postabsence = function(req, res){
+    var update = {
+        leavingtime : req.body.leavingtime,
+        id_post : req.body.id_post
+    };
+
+    var query = "UPDATE ?? SET ?? = ? where ?? = ?";
+    var table = ["trackrec", "leavingtime", update.leavingtime, "id_post", parseInt(update.id_post)];
+
+    query = mysql.format(query,table);
+
+    connection.query(query, function(error, rows){
+        if(error){
+            console.log(error);
+            res.status(400).json({Error : "Yes", "Message" : "something is wrong"});
+        }else{
+            res.status(200).json({Success : "true", "Message" : "Your absence has been saved."});
         }
     })
 }
