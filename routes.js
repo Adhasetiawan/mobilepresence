@@ -13,6 +13,9 @@ module.exports = function(app){
     app.route('/detailrec')
     .get(verifikasi(), myjson.detailrec);
 
+    app.route('/editact')
+    .put(verifikasi(), myjson.editact);
+
     app.route('/presence')
     .post(verifikasi(), myjson.postpresence)
 

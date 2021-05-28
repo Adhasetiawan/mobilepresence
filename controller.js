@@ -53,6 +53,28 @@ exports.detailrec = function(req,res){
     })
 }
 
+//edit post in single track
+exports.editact = function(req, res){
+    var edit= {
+        date : req.body.date,
+        post : req.body.post
+    };
+
+    var query = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
+    var table = ["trackrec", "post", edit.post, "date", edit.date];
+
+    query = mysql.format(query,table);
+
+    connection.query(query, function(error, rows){
+        if(error){
+            console.log(error);
+            res.status(400).json({Error : "Yes", "Message" : "Your activity can't be updated!"});
+        }else{
+            res.status(200).json({Success : "true", "Message" : "Your activity has been updated."});
+        }
+    })
+}
+
 //post presence
 exports.postpresence = function(req, res){
     var presence={
@@ -87,7 +109,7 @@ exports.postabsence = function(req, res){
         id_post : req.body.id_post
     };
 
-    var query = "UPDATE ?? SET ?? = ? where ?? = ?";
+    var query = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
     var table = ["trackrec", "leavingtime", update.leavingtime, "id_post", parseInt(update.id_post)];
 
     query = mysql.format(query,table);
