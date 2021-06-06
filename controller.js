@@ -84,6 +84,7 @@ exports.postpresence = function(req, res){
         leavingtime : req.body.leavingtime,
         latitude : req.body.latitude,
         longitude : req.body.longitude,
+        location : req.body.location,
         id_user : req.body.id_user
     };
 
