@@ -131,18 +131,19 @@ exports.postabsence = function(req, res){
 
 //get location
 exports.getlocation = function(req,res){
-    var id_location = req.body.id_location;
+    let id_location = req.params.id_location;
 
     var query = "SELECT * FROM place_location WHERE ?? = ?";
-    var table = ["id_location", parseInt(id_location)];
+    var table = ["id_location", id_location];
 
     query = mysql.format(query, table);
 
     connection.query(query, function(error, rows){
-        if(rows.length > 0){
-            res.json({Success : "True", location : rows[0]});
-        }else{
+        if(error){
+            console.log(error)
             res.status(404).json({Error : "True", "Message" : "Location is not found"});
+        }else{
+            res.status(200).json({Success : "True", location : rows});
         }
          
     })
