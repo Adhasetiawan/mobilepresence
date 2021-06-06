@@ -7,7 +7,7 @@ module.exports = function(app){
     app.route('/')
     .get(myjson.index);
 
-    app.route('/trackrecord')
+    app.route('/trackrecord:page')
     .get(verifikasi(), myjson.trackrec);
 
     app.route('/detailrec')
