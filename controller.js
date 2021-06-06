@@ -5,6 +5,7 @@ var connection = require('./connection');
 const conn = require('./connection');
 var mysql = require('mysql');
 const { query, format } = require('./connection');
+const e = require('express');
 
 //indexing
 exports.index = function (req, res){
@@ -48,7 +49,7 @@ exports.detailrec = function(req,res){
         if(rows.length > 0){
              res.json({Success : "true", detail : rows[0]});
         }else{
-            res.status(400).json({"Error" : true, "Massage" : "Something went wrong!"});
+            res.status(404).json({"Error" : true, "Massage" : "Something went wrong!"});
         }
     })
 }
@@ -122,5 +123,24 @@ exports.postabsence = function(req, res){
         }else{
             res.status(200).json({Success : "true", "Message" : "Your absence has been saved."});
         }
+    })
+}
+
+//get location
+exports.getlocation = function(req,res){
+    var id_location = req.body.id_location;
+
+    var query = "SELECT * FROM place_location WHERE ?? = ?";
+    var table = ["id_location", parseInt(id_location)];
+
+    query = mysql.format(query, table);
+
+    connection.query(query, function(error, rows){
+        if(rows.length > 0){
+            res.json({Success : "True", location : rows[0]});
+        }else{
+            res.status(404).json({Error : "True", "Message" : "Location is not found"});
+        }
+         
     })
 }
