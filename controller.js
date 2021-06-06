@@ -38,10 +38,13 @@ exports.trackrec = function (req, res){
 
 //get single track
 exports.detailrec = function(req,res){
-    var date = req.body.date;
+    var detail = {
+        date : req.body.date,
+        id_user : req.body.id_user
+    };
 
-    var query = "SELECT * FROM trackrec WHERE ?? = ?";
-    var input = ["date", date];
+    var query = "SELECT * FROM trackrec WHERE ?? = ? AND ?? = ?";
+    var input = ["date", detail.date, "id_user", detail.id_user];
 
     query = mysql.format(query,input);
     
