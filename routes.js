@@ -21,4 +21,7 @@ module.exports = function(app){
 
     app.route('/absence')
     .put(verifikasi(), myjson.postabsence);
+
+    app.route('/getlocation')
+    .get(verifikasi() ,myjson.getlocation)
 }
