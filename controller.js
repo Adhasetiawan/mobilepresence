@@ -17,12 +17,13 @@ exports.trackrec = function (req, res){
     var search = {
         id_user : req.body.id_user,
         date_one : req.body.date_one,
-        date_two : req.body.date_two,
-        page : req.body.page
+        date_two : req.body.date_two
     };
 
+    var page = req.params.date
+
     var query = "SELECT * FROM trackrec WHERE ?? = ? AND ?? BETWEEN ? AND ? limit 2 OFFSET ?"
-    var input = ["id_user", search.id_user, "date", search.date_one, search.date_two, parseInt(search.page)];
+    var input = ["id_user", search.id_user, "date", search.date_one, search.date_two, page];
 
     query = mysql.format(query,input);
     
