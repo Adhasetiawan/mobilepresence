@@ -112,11 +112,11 @@ exports.postpresence = function(req, res){
 exports.postabsence = function(req, res){
     var update = {
         leavingtime : req.body.leavingtime,
-        id_post : req.body.id_post
+        date : req.body.date
     };
 
     var query = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
-    var table = ["trackrec", "leavingtime", update.leavingtime, "id_post", parseInt(update.id_post)];
+    var table = ["trackrec", "leavingtime", update.leavingtime, "id_post", date];
 
     query = mysql.format(query,table);
 
