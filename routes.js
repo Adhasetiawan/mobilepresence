@@ -7,7 +7,7 @@ module.exports = function(app){
     app.route('/')
     .get(myjson.index);
 
-    app.route('/trackrecord:page')
+    app.route('/trackrecord')
     .get(verifikasi(), myjson.trackrec);
 
     app.route('/detailrec')
@@ -22,6 +22,6 @@ module.exports = function(app){
     app.route('/absence')
     .put(verifikasi(), myjson.postabsence);
 
-    app.route('/getlocation:id_location')
+    app.route('/getlocation/:id_location')
     .get(verifikasi() ,myjson.getlocation);
 }
