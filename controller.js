@@ -4,8 +4,8 @@ var response = require('./res');
 var connection = require('./connection');
 const conn = require('./connection');
 var mysql = require('mysql');
-const { query, format } = require('./connection');
-const e = require('express');
+// const { query, format } = require('./connection');
+// const e = require('express');
 
 //indexing
 exports.index = function (req, res){
@@ -116,7 +116,7 @@ exports.postabsence = function(req, res){
     };
 
     var query = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
-    var table = ["trackrec", "leavingtime", update.leavingtime, "id_post", date];
+    var table = ["trackrec", "leavingtime", update.leavingtime, "date", update.date];
 
     query = mysql.format(query,table);
 
