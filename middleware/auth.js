@@ -67,7 +67,7 @@ exports.login = function(req, res){
             console.log(error)
         }else{
             if (rows.length == 1){
-                var token = jwt.sign({rows}, config.secret, {expiresIn: 36000});
+                var token = jwt.sign({rows}, config.secret, {expiresIn: 100000});
                 id_user = rows[0].id_user;
                 username = rows[0].username;
                 email = rows[0].email;

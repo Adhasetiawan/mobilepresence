@@ -12,7 +12,7 @@ exports.index = function (req, res){
     response.ok("Welcome", res);
 }
 
-//get all track
+//get all track ===> masih dalam perbaikan
 exports.trackrec = function (req, res){
     var search = {
         id_user : req.body.id_user,
@@ -20,9 +20,9 @@ exports.trackrec = function (req, res){
         date_two : req.body.date_two
     };
 
-    var page = req.params.date
+    const page = req.query.date;
 
-    var query = "SELECT * FROM trackrec WHERE ?? = ? AND ?? BETWEEN ? AND ? limit 2 OFFSET ?"
+    var query = "SELECT * FROM trackrec WHERE ?? = ? AND ?? BETWEEN ? AND ? LIMIT 5 OFFSET ?"
     var input = ["id_user", search.id_user, "date", search.date_one, search.date_two, page];
 
     query = mysql.format(query,input);
@@ -132,6 +132,7 @@ exports.postabsence = function(req, res){
 
 //get location
 exports.getlocation = function(req,res){
+
     let id_location = req.params.id_location;
 
     var query = "SELECT * FROM place_location WHERE ?? = ?";
