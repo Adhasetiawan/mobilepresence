@@ -81,7 +81,7 @@ exports.editact = function(req, res){
     })
 }
 
-//post presence ===> kalau sudah absen gimana?
+//post presence ===> Final
 exports.postpresence = function(req, res){
     var presence={
         post : req.body.post,
