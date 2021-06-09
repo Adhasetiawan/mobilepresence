@@ -4,15 +4,15 @@ var response = require('./res');
 var connection = require('./connection');
 const conn = require('./connection');
 var mysql = require('mysql');
-// const { query, format } = require('./connection');
-// const e = require('express');
+const { query, format } = require('./connection');
+const e = require('express');
 
 //indexing
 exports.index = function (req, res){
     response.ok("Welcome", res);
 }
 
-//get all track ===> masih dalam perbaikan
+//get all track ===> Pagination is still in progress
 exports.trackrec = function (req, res){
     var search = {
         id_user : req.body.id_user,
@@ -37,7 +37,7 @@ exports.trackrec = function (req, res){
     })
 }
 
-//get single track
+//get single track ===> Final
 exports.detailrec = function(req,res){
     var detail = {
         date : req.body.date,
@@ -58,15 +58,16 @@ exports.detailrec = function(req,res){
     })
 }
 
-//edit post in single track
+//edit post in single track ===> Final
 exports.editact = function(req, res){
     var edit= {
         date : req.body.date,
-        post : req.body.post
+        post : req.body.post,
+        id_user : req.body.id_user
     };
 
-    var query = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
-    var table = ["trackrec", "post", edit.post, "date", edit.date];
+    var query = "UPDATE ?? SET ?? = ? WHERE ?? = ? AND ?? = ?";
+    var table = ["trackrec", "post", edit.post, "date", edit.date, "id_user", edit.id_user];
 
     query = mysql.format(query,table);
 
@@ -80,7 +81,7 @@ exports.editact = function(req, res){
     })
 }
 
-//post presence
+//post presence ===> kalau sudah absen gimana?
 exports.postpresence = function(req, res){
     var presence={
         post : req.body.post,
@@ -93,30 +94,48 @@ exports.postpresence = function(req, res){
         id_user : req.body.id_user
     };
 
-    var query = "INSERT INTO ?? SET ?";
-    var table = ["trackrec"];
+    var query = "SELECT * FROM ?? WHERE ?? = ? AND ?? = ?";
+    var table = ["trackrec", "date", presence.date, "id_user", presence.id_user];
 
     query = mysql.format(query, table);
 
-    connection.query(query, presence, function(error, rows){
+    connection.query(query, function(error, rows){
         if(error){
             console.log(error);
-            res.status(400).json({Error : "Yes", "Message" : "something is wrong"});
+            res.status(404).json({Error : "True", "Message" : "Data is not exist"});
         }else{
-            response.ok("Your presence has been saved",res);
+            if(rows.length == 0){
+            
+                var query = "INSERT INTO ?? SET ?";
+                var table = ["trackrec"];
+            
+                query = mysql.format(query, table);
+
+                connection.query(query, presence, function(error, rows){
+                    if(error){
+                        console.log(error);
+                        res.status(400).json({Error : "True", "Message" : "Bad input"});
+                    }else{
+                        response.ok("Presence has been made", res)
+                    }
+                });
+            }else{
+                res.status(400).json({Error : "True", "Message" : "Date already exist"});
+            }
         }
     })
 }
 
-//post absence
+//post absence ===> Final
 exports.postabsence = function(req, res){
     var update = {
         leavingtime : req.body.leavingtime,
-        date : req.body.date
+        date : req.body.date,
+        id_user : req.body.id_user
     };
 
-    var query = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
-    var table = ["trackrec", "leavingtime", update.leavingtime, "date", update.date];
+    var query = "UPDATE ?? SET ?? = ? WHERE ?? = ? AND ?? = ?";
+    var table = ["trackrec", "leavingtime", update.leavingtime, "date", update.date, "id_user", update.id_user];
 
     query = mysql.format(query,table);
 
@@ -130,7 +149,7 @@ exports.postabsence = function(req, res){
     })
 }
 
-//get location
+//get location ===> Final
 exports.getlocation = function(req,res){
 
     let id_location = req.params.id_location;
