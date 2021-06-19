@@ -14,10 +14,10 @@ exports.index = function (req, res){
 
 //get all track ===> Pagination is still in progress
 exports.trackrec = function (req, res){
-    var search = {
-        id_user : req.body.id_user,
-        date_one : req.body.date_one,
-        date_two : req.body.date_two
+    let search = {
+        id_user : req.params.id_user,
+        date_one : req.params.date_one,
+        date_two : req.params.date_two
     };
 
     var query = "SELECT COUNT(id_post) AS totalPost FROM ?? WHERE ?? = ? AND ?? BETWEEN ? AND ?";
@@ -30,7 +30,7 @@ exports.trackrec = function (req, res){
          console.log(error)
          res.status(400).json({"Error" : true, "Massage" : "Something went wrong!"});
         }else{
-            var totalPage = rows[0].totalPost;
+            var totalPage = Math.ceil(rows[0].totalPost/5);
             const page = req.query.page;
             const limit = 5;
             const offset = (page - 1) * limit;
