@@ -20,10 +20,8 @@ exports.trackrec = function (req, res){
         date_two : req.body.date_two
     };
 
-    const page = req.query.date;
-
-    var query = "SELECT * FROM trackrec WHERE ?? = ? AND ?? BETWEEN ? AND ? LIMIT 5 OFFSET ?"
-    var input = ["id_user", search.id_user, "date", search.date_one, search.date_two, page];
+    var query = "SELECT COUNT(id_post) AS totalPost FROM ?? WHERE ?? = ? AND ?? BETWEEN ? AND ?";
+    var input = ["trackrec", "id_user", search.id_user, "date", search.date_one, search.date_two];
 
     query = mysql.format(query,input);
     
@@ -32,7 +30,24 @@ exports.trackrec = function (req, res){
          console.log(error)
          res.status(400).json({"Error" : true, "Massage" : "Something went wrong!"});
         }else{
-            res.json({success : true, data_track : rows});
+            var totalPage = rows[0].totalPost;
+            const page = req.query.page;
+            const limit = 5;
+            const offset = (page - 1) * limit;
+
+            var query = "SELECT trackrec.id_post, trackrec.date FROM ?? WHERE ?? = ? AND ?? BETWEEN ? AND ? LIMIT " + limit + " OFFSET " + offset;
+            var table = ["trackrec", "id_user", search.id_user, "date", search.date_one, search.date_two];
+
+            query = mysql.format(query,table);
+
+            connection.query(query, function(error, rows){
+                if(error){
+                    console.log(error)
+                    res.status(404).json({Error : "True", "Message" : "Something is wrong"});
+                }else{
+                    res.status(200).json({Success : "True", page_number : page, total_page :totalPage, trackrecord : rows});
+                }
+            })
         }
     })
 }
