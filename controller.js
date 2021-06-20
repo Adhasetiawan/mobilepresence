@@ -35,7 +35,7 @@ exports.trackrec = function (req, res){
             const limit = 5;
             const offset = (page - 1) * limit;
 
-            var query = "SELECT trackrec.date, trackrec.location FROM ?? WHERE ?? = ? AND ?? BETWEEN ? AND ? LIMIT " + limit + " OFFSET " + offset;
+            var query = "SELECT trackrec.id_post, trackrec.date, trackrec.location FROM ?? WHERE ?? = ? AND ?? BETWEEN ? AND ? LIMIT " + limit + " OFFSET " + offset;
             var table = ["trackrec", "id_user", search.id_user, "date", search.date_one, search.date_two];
 
             query = mysql.format(query,table);
