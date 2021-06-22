@@ -53,9 +53,9 @@ exports.trackrec = function (req, res){
 
 //get single track ===> Final
 exports.detailrec = function(req,res){
-    var detail = {
-        date : req.body.date,
-        id_user : req.body.id_user
+    let detail = {
+        date : req.params.date,
+        id_user : req.params.id_user
     };
 
     var query = "SELECT * FROM trackrec WHERE ?? = ? AND ?? = ?";

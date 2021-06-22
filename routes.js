@@ -10,7 +10,7 @@ module.exports = function(app){
     app.route('/trackrecord/:id_user/:date_one/:date_two')
     .get(verifikasi(), myjson.trackrec);
 
-    app.route('/detailrec')
+    app.route('/detailrec/:date/:id_user')
     .get(verifikasi(), myjson.detailrec);
 
     app.route('/editact')
