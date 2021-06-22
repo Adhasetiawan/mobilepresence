@@ -20,34 +20,33 @@ exports.trackrec = function (req, res){
         date_two : req.params.date_two
     };
 
-    var query = "SELECT COUNT(id_post) AS totalPost FROM ?? WHERE ?? = ? AND ?? BETWEEN ? AND ?";
-    var input = ["trackrec", "id_user", search.id_user, "date", search.date_one, search.date_two];
+    var query = "SELECT DATEDIFF(?, ?) AS dayDiff";
+    var input = [search.date_one, search.date_two];
 
     query = mysql.format(query,input);
     
     connection.query(query, function(error,rows){
-        if(error){
-         console.log(error)
-         res.status(400).json({"Error" : true, "Massage" : "Something went wrong!"});
+        if (error){
+            console.log(error)
+            res.status(400).json({Status : "Error", "Message" : "Something is wrong"});
         }else{
-            var totalPage = Math.ceil(rows[0].totalPost/5);
-            const page = req.query.page;
-            const limit = 5;
-            const offset = (page - 1) * limit;
+            if(rows[0].dayDiff <= 0 || rows[0].dayDiff > 90){
+                res.status(404).json({Status : "Error", "Message" : "Please check the input"});
+            }else{
+                var total = rows[0].dayDiff;
+                var query = "SELECT trackrec.id_post, trackrec.date, trackrec.location FROM ?? WHERE ?? = ? AND ?? BETWEEN ? AND ?";
+                var table = ["trackrec", "id_user", search.id_user, "date", search.date_two, search.date_one]
 
-            var query = "SELECT trackrec.id_post, trackrec.date, trackrec.location FROM ?? WHERE ?? = ? AND ?? BETWEEN ? AND ? LIMIT " + limit + " OFFSET " + offset;
-            var table = ["trackrec", "id_user", search.id_user, "date", search.date_one, search.date_two];
-
-            query = mysql.format(query,table);
-
-            connection.query(query, function(error, rows){
-                if(error){
-                    console.log(error)
-                    res.status(404).json({Error : "True", "Message" : "Something is wrong"});
-                }else{
-                    res.status(200).json({Success : "True", page_number : page, total_page :totalPage, trackrecord : rows});
-                }
-            })
+                query = mysql.format(query, table);
+                connection.query(query, function(error, rows){
+                    if(error){
+                        console.log(error);
+                        res.status(400).json({Status : "Error", "Message" : "Bad Request"});
+                    }else{
+                        res.status(200).json({Status :"Success", Total : total, Trackrecord : rows});
+                    }
+                })
+            }
         }
     })
 }
