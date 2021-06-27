@@ -34,7 +34,7 @@ exports.trackrec = function (req, res){
                 res.status(404).json({Status : "Error", "Message" : "Please check the input"});
             }else{
                 var total = rows[0].dayDiff;
-                var query = "SELECT trackrec.id_post, trackrec.date, trackrec.location FROM ?? WHERE ?? = ? AND ?? BETWEEN ? AND ?";
+                var query = "SELECT trackrec.id_post, trackrec.date, trackrec.arrivetime, trackrec.location FROM ?? WHERE ?? = ? AND ?? BETWEEN ? AND ?";
                 var table = ["trackrec", "id_user", search.id_user, "date", search.date_two, search.date_one]
 
                 query = mysql.format(query, table);
