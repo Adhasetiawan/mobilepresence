@@ -53,12 +53,11 @@ exports.registrasi = function(req, res){
 exports.login = function(req, res){
     var post = {
         email : req.body.email,
-        password : req.body.password,
-        imei : req.body.imei
+        password : req.body.password
     }
 
-    var query = "SELECT * FROM ?? WHERE ?? = ? AND ?? = ? AND ?? = ?";
-    var table = ["user_tbl", "email", post.email, "password", md5(post.password), "imei", post.imei];
+    var query = "SELECT * FROM ?? WHERE ?? = ? AND ?? = ?";
+    var table = ["user_tbl", "email", post.email, "password", md5(post.password)];
 
     query = mysql.format(query,table);
 
