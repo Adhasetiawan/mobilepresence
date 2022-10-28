@@ -12,7 +12,7 @@ exports.index = function (req, res){
     response.ok("Welcome", res);
 }
 
-//get all track ===> Final tes
+//get all track ===> Final
 exports.trackrec = function (req, res){
     let search = {
         id_user : req.params.id_user,
