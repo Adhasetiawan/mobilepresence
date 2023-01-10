@@ -24,4 +24,7 @@ module.exports = function(app){
 
     app.route('/getlocation/:id_location')
     .get(verifikasi() ,myjson.getlocation);
+
+    app.route('/getlengthtrackrec/:id_user/:location')
+    .get(verifikasi(), myjson.getlengthtrackrec);
 }

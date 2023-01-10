@@ -183,3 +183,26 @@ exports.getlocation = function(req,res){
          
     })
 }
+
+//get all track record length base on id
+exports.getlengthtrackrec = function(req,res){
+    let inputreq = {
+        id_user : req.params.id_user,
+        location : req.params.location
+    };
+
+    var query = "SELECT COUNT(??) AS totaldata FROM trackrec WHERE id_user = ? AND location = ?";
+    var input = ["id_post", inputreq.id_user, inputreq.location];
+
+    query = mysql.format(query,input);
+
+    connection.query(query, function(error, rows){
+        if(rows.length > 0){
+            console.log(query);
+             res.status(200).json({Status : true, data : rows[0].totaldata});
+        }else{
+            console.log(error);
+            res.status(404).json({Status : false, "Massage" : "Something went wrong!"});
+        }
+    })
+}
